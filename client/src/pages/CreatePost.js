@@ -34,24 +34,25 @@ if(redirect){
 }
     return (
 <form onSubmit={createNewPost}>
+    <h4>Region</h4>
     <input type="title" 
-    placeholder={'Title'} />
-    <input type="title" 
-    placeholder={'Title'} 
+    placeholder={'Region'} 
     value ={title} 
     onChange={ev=> setTitle(ev.target.value)}/>
-        <input type="title" 
-    placeholder={'Title'} 
-    value ={title} 
-    onChange={ev=> setTitle(ev.target.value)}/>
+    <h4>SensorID</h4>
     <input type = "summary" 
-    placeholder={'summary'}
+    placeholder={'SensorID'}
     value = {summary}
     onChange={ev=> setSummary(ev.target.value)}/>
+    <h4>Image Attached</h4>
     <input type = "file"
     onChange={ev=>setFiles(ev.target.files)}/>
+    <h4>Precautions taken</h4>
     <Editor value={content} onChange={setContent}/>
-    <button style={{marginTop:'5px'}}>Create post</button>
+    <div className='cobblePostbtn'>
+    <button style={{marginTop:'5px'}}>Add log</button>
+    </div>
+
 
 </form>
     )

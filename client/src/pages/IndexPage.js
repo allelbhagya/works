@@ -19,11 +19,21 @@ export default function IndexPage() {
   }, []);
 
   return (
-    <>
+    <div>
+      <h3>data for logs here</h3>
+          <>
+        <tr className="post-header">
+        <th className="cell">Region</th>
+        <th className="cell">Created by</th>
+        <th className="cell">Time</th>
+        <th className="cell">SensorID</th>
+    </tr>
     
       {posts.length > 0 && posts.map(post => (
         <Post key={post._id} {...post} />
       ))}
     </>
+    </div>
+
   );
 }

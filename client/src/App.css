@@ -193,23 +193,32 @@ a svg{
 }
 .post-table {
   width: 100%;
-  overflow-x: auto; /* Enable horizontal scrolling for small screens */
   border-collapse: collapse;
 }
 
-.post {
-  border: 1px solid #ddd;
-}
 
 .cell {
   border: 1px solid #3d3d3d;
   padding: 8px;
-  text-align: left;
+  text-align: center;
 }
 
-.summary {
-  max-width: 200px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+
+
+
+.cobblePostbtn button {
+  margin-top: 5px;
+  text-decoration: none;
+  font-weight: bolder;
+  padding: 10px 15px;
+  background-color: #00375c;
+  color: #fff;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+  border: none; /* Optional: Remove button border if not needed */
+  cursor: pointer; /* Optional: Change cursor on hover */
+}
+
+.cobblePostbtn button:hover {
+  background-color: #2980b9;
 }
