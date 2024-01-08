@@ -31,7 +31,7 @@ export default function Header(){
           {username && (
             <>
             <Link to="/create">Create report</Link>
-            <Link onClick="/">Analysis</Link>
+            <Link to="/analysis">Analysis</Link>
             <Link onClick={logout}>Logout</Link>
             </>
           )}
