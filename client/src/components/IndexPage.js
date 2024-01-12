@@ -17,15 +17,15 @@ export default function IndexPage() {
   }, []);
 
   const filteredLogs = logs.filter(log =>
-    Object.values(log).some(value =>
-      value.toString().toLowerCase().includes(searchTerm.toLowerCase())
+    Object.values(log || {}).some(value =>
+      value ? value.toString().toLowerCase().includes(searchTerm.toLowerCase()) : false
     )
   );
 
   return (
     <div className="log">
       <div>
-        <>
+        <div className="search-box">
           <h4>Search for a log</h4>
           <input
             type="text"
@@ -33,7 +33,7 @@ export default function IndexPage() {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
-        </>
+        </div>
       </div>
       <table>
         <thead>
@@ -51,7 +51,7 @@ export default function IndexPage() {
         <tbody>
           {filteredLogs.length > 0 ? (
             filteredLogs.map(log => (
-              <Log key={log._id} {...log} />
+              <Log key={log?._id} {...log} />
             ))
           ) : (
             <tr>
