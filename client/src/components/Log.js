@@ -1,4 +1,4 @@
-export default function Log({ time, duration, region, sensorID, profile, measure, comment }) {
+export default function Log({ time, duration, region, sensorID, profile, measure, comment, stoppage }) {
     return (
         <tr>
             <td>{time}</td>
@@ -6,8 +6,10 @@ export default function Log({ time, duration, region, sensorID, profile, measure
             <td>{region}</td>
             <td>{sensorID}</td>
             <td>{profile}</td>
+            <td>{stoppage}</td>
             <td>{measure}</td>
             <td>{comment}</td>
+
         </tr>
     );
 }

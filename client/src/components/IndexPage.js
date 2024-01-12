@@ -40,9 +40,10 @@ export default function IndexPage() {
           <tr>
             <th>Time</th>
             <th>Duration</th>
-            <th>Region</th>
+            <th className="region-head">Region</th>
             <th>Sensor ID</th>
             <th>Profile</th>
+            <th>Stoppage</th>
             <th>Measure</th>
             <th>Comment</th>
           </tr>
