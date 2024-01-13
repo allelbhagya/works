@@ -1,16 +1,57 @@
 import { useState } from "react";
 import { Navigate } from "react-router-dom";
+import { useEffect } from "react";
+import Select from "react-select"; // Import react-select
 
 export default function CreateLog() {
   const [times, setTimes] = useState('');
   const [duration, setDuration] = useState('');
   const [selectedRegions, setSelectedRegions] = useState([]);
+  const [selectedSensors, setSelectedSensors] = useState([]);
   const [sensorID, setSensorID] = useState('');
   const [selectedStoppages, setSelectedStoppages] = useState([]);
   const [prof, setProf] = useState('');
   const [mea, setMea] = useState('');
   const [comms, setComms] = useState('');
+  const [sensorOptions, setSensorOptions] = useState([]);
   const [redirect, setRedirect] = useState(false);
+
+  useEffect(() => {
+    const fetchSensorOptions = async () => {
+      try {
+        const response = await fetch('/sensor.csv');
+        const csvData = await response.text();
+  
+        console.log('CSV Data:', csvData); // Log CSV data to the console
+  
+        const lines = csvData.split('\n');
+        const options = lines.slice(1).map(line => {
+          const [sensorID, tagName] = line.split(',');
+  
+          // Log sensorID and tagName to identify any issues
+          console.log('Raw sensorID:', sensorID);
+          console.log('Raw tagName:', tagName);
+  
+          // Trim and handle cases where sensorID or tagName might be undefined
+          const trimmedSensorID = sensorID ? sensorID.trim() : '';
+          const trimmedTagName = tagName ? tagName.trim() : '';
+  
+          // Log trimmed values
+          console.log('Trimmed sensorID:', trimmedSensorID);
+          console.log('Trimmed tagName:', trimmedTagName);
+  
+          return `${trimmedSensorID}: ${trimmedTagName}`;
+        });
+  
+        setSensorOptions(options);
+      } catch (error) {
+        console.error('Error fetching or parsing CSV file:', error);
+      }
+    };
+  
+    fetchSensorOptions();
+  }, []); // Empty dependency array to run the effect only once on component mount
+  
 
   const regionOptions = [
     "CVR_L1", "CVR_L2", "CVAH_L1", "CVAH_L2", "Pinch_Roll_L1",
@@ -43,12 +84,11 @@ export default function CreateLog() {
     data.set('time', times);
     data.set('duration', duration);
     data.set('region', JSON.stringify(selectedRegions));
-    data.set('sensorID', sensorID);
+    data.set('sensorID', JSON.stringify(selectedSensors.map(sensor => sensor.value)));
     data.set('stoppage', JSON.stringify(selectedStoppages));
     data.set('profile', prof);
     data.set('comment', comms);
     data.set('measure', mea);
-
     ev.preventDefault();
     const response = await fetch('http://localhost:4000/log', {
       method: 'POST',
@@ -111,16 +151,15 @@ export default function CreateLog() {
     </div>
   ))}
 </div>
-
-
-      <label>
+<label>
         SensorID and Tag name
       </label>
-      <input
-        type="text"
-        placeholder="sensorID"
-        value={sensorID}
-        onChange={ev => setSensorID(ev.target.value)}
+      <Select
+        isMulti // Enable multi-select
+        value={selectedSensors}
+        options={sensorOptions.map(option => ({ value: option, label: option }))}
+        onChange={selectedOptions => setSelectedSensors(selectedOptions)}
+        placeholder="Select Sensor ID"
       />
       <label>
         Profile

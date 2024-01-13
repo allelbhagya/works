@@ -7,7 +7,7 @@ const Log = ({ _id, time, duration, region, sensorID, profile, stoppage, measure
       <td>{time}</td>
       <td>{duration}</td>
       <td className="region-head">{region}</td>
-      <td>{sensorID}</td> 
+      <td>{Array.isArray(sensorID) ? sensorID.join(', ') : sensorID}</td> 
       <td>{profile}</td>
       <td>{stoppage}</td>
       <td>{measure}</td>
