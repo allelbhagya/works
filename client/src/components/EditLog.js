@@ -113,7 +113,7 @@ export default function EditLog() {
     
       return (
         <form className="logform" onSubmit={updateLog}>
-          <h1>Edit a log</h1>
+          <h1 style={{ fontSize: '1.5em' }}>Edit a log</h1>
           <label>Report time</label>
           <input
             type="datetime-local"

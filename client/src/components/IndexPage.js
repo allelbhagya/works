@@ -57,7 +57,7 @@ const handleEdit = (logId) => {
     <div className="log">
       <div>
         <div className="search-box">
-          <h4>Search for a log</h4>
+          <h1>Search for a log</h1>
           <input
             type="text"
             placeholder="Search"

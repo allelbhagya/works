@@ -61,9 +61,8 @@ button {
   padding: 8px 0;
 }
 
-form h1 {
-  text-align: center;
-  font-size: 1em
+h1 {
+  text-align: left;
 }
 
 .logform {
@@ -261,4 +260,9 @@ header nav .nav-button:hover {
 .log-buttons button {
   font-size: 15px; /* Adjust font size as needed */
   padding: 5px; /* Adjust padding as needed */ /* Adjust font size as needed */
+}
+
+/* styles.css */
+h1 {
+  font-size: 1.5em; /* You can adjust the value as needed */
 }
