@@ -29,12 +29,14 @@ export default function Header(){
           <nav>
             {username && (
               <>
+                <Link to="/analysis" className="nav-button">Analysis</Link>
                 <Link to="/create" className="nav-button">Create new log</Link>
                 <Link onClick={logout} className="nav-button">Logout</Link>
               </>
             )}
             {!username && (
               <>
+                <Link to="/analysis" className="nav-button">Analysis</Link>
                 <Link to="/login" className="nav-button">Login</Link>
                 <Link to="/register" className="nav-button">Register</Link>
               </>

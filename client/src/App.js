@@ -6,6 +6,7 @@ import LoginPage from './components/LoginPage';
 import RegisterPage from "./components/RegisterPage";
 import { UserContextProvider } from './components/UserContext';
 import CreateLog from './components/CreateLog';
+import AnalysisPage from './components/AnalysisPage';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route path="/login" element={<LoginPage/>} />
         <Route path="/register" element={<RegisterPage />}/>
         <Route path="/create" element={<CreateLog />}/>
+        <Route path="/analysis" element={<AnalysisPage/>}/>
       </Route>
     </Routes> 
     </UserContextProvider>
