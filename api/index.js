@@ -83,4 +83,20 @@ app.get('/log', async(req,res)=>{
     res.json(await Logs.find());
 })
 
+app.delete('/log/:id', async (req, res) => {
+    const logId = req.params.id;
+    try {
+        const deletedLog = await Logs.findByIdAndDelete(logId);
+
+        if (deletedLog) {
+            res.json({ message: 'Log deleted successfully', log: deletedLog });
+        } else {
+            res.status(404).json({ message: 'Log not found' });
+        }
+    } catch (error) {
+        console.error('Error deleting log:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+});
+
 app.listen(4000);
