@@ -99,4 +99,28 @@ app.delete('/log/:id', async (req, res) => {
     }
 });
 
+app.get('/log/:id', async (req, res) => {
+    try {
+      const log = await Logs.findById(req.params.id);
+      res.json(log);
+    } catch (error) {
+      res.status(500).json({ error: 'Error fetching log data' });
+    }
+  });
+
+
+  app.put('/log/:id', async (req, res) => {
+    const logId = req.params.id;
+    const updatedLog = req.body;
+  
+    try {
+      const updatedLogResult = await Logs.findByIdAndUpdate(req.params.id, req.body, { new: true });
+      res.status(200).json(updatedLogResult);
+    } catch (error) {
+      console.error('Error updating log:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  });
+  
+
 app.listen(4000);

@@ -1,8 +1,10 @@
 // IndexPage.js
 import React, { useEffect, useState } from 'react';
 import Log from './Log';
+import { useNavigate } from 'react-router-dom';
 
 export default function IndexPage() {
+  const navigate = useNavigate();
   const [logs, setLogs] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -40,9 +42,10 @@ const handleDelete = async (logId) => {
   }
 };
 
-  const handleEdit = (logId) => {
-    console.log('Edit log with ID:', logId);
-  };
+const handleEdit = (logId) => {
+  // Redirect to the edit page with the logId
+  navigate(`/edit/${logId}`);
+};
 
   const filteredLogs = logs.filter(log =>
     Object.values(log || {}).some(value =>
@@ -85,6 +88,7 @@ const handleDelete = async (logId) => {
                 {...log}
                 onDelete={() => handleDelete(log._id)} 
                 onEdit={handleEdit}
+
               />
             ))
           ) : (
