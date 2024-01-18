@@ -10,7 +10,8 @@ const LogSchema = new Schema({
     stoppage: String,
     profile: String,
     measure: String,
-    comment: String},{
+    comment: String,
+    author:{type:Schema.Types.ObjectId, ref:'User'}},{
         timestamps:true,
     });
 

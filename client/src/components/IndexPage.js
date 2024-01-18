@@ -69,7 +69,9 @@ const handleEdit = (logId) => {
       <table>
         <thead>
           <tr>
-            <th>Time</th>
+            <th>Report time</th>
+            <th>Cobble time</th>
+            <th>Reported by</th>
             <th>Duration</th>
             <th className="region-head">Region</th>
             <th>Sensor ID</th>

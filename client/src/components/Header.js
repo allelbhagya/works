@@ -29,6 +29,7 @@ export default function Header(){
           <nav>
             {username && (
               <>
+              <h2>Hi! {username}</h2>
                 <Link to="/analysis" className="nav-button">Analysis</Link>
                 <Link to="/create" className="nav-button">Create new log</Link>
                 <Link onClick={logout} className="nav-button">Logout</Link>

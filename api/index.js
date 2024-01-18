@@ -65,22 +65,32 @@ app.post('/logout', (req,res)=>{
 })
 
 app.post('/log', upload.none(), async(req, res) => {
-    const {time, duration, region, sensorID, stoppage, profile, comment, measure } = req.body;
-    const logDoc = await Logs.create({
-        time,
-        duration, 
-        region, 
-        sensorID, 
-        stoppage, 
-        profile, 
-        comment, 
-        measure
+
+    const {token} = req.cookies;
+    jwt.verify(token, secret, {}, async(err, info)=>{
+        if(err) throw err;
+        const {time, duration, region, sensorID, stoppage, profile, comment, measure } = req.body;
+        const logDoc = await Logs.create({
+            time,
+            duration, 
+            region, 
+            sensorID, 
+            stoppage, 
+            profile, 
+            comment, 
+            measure,
+            author:info.id,
+        })
+
+        res.json(logDoc)
     })
-    res.json(logDoc)
 });
 
 app.get('/log', async(req,res)=>{
-    res.json(await Logs.find());
+    res.json(
+        await Logs.find().populate('author', ['username'])
+          .sort({createdAt: -1})
+      );
 })
 
 app.delete('/log/:id', async (req, res) => {
