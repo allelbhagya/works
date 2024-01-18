@@ -8,6 +8,54 @@ export default function IndexPage() {
   const [logs, setLogs] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
 
+  const downloadCSV = () => {
+    // Prepare the CSV content
+    const headers = [
+      'Report time',
+      'Cobble time',
+      'Reported by',
+      'Duration',
+      'Region',
+      'Sensor ID',
+      'Profile',
+      'Stoppage',
+      'Measure',
+      'Comment',
+    ];
+  
+    const csvContent = [
+      headers.join(','),
+      ...filteredLogs.map(log => headers.map(header => {
+        switch (header) {
+          case 'Report time':
+            return new Date(log['time']).toLocaleString();
+          case 'Cobble time':
+            return new Date(log['createdAt']).toLocaleString();
+          case 'Reported by':
+            return log['author']['username'];
+            case 'Sensor ID':
+              return Array.isArray(log['sensorID']) ? log['sensorID'].join(', ') : log['sensorID'];
+          case 'Profile':
+            return log['profile'];
+          default:
+            return log[header.toLowerCase()];
+        }
+      }).join(',')),
+    ].join('\n');
+  
+    // Create a Blob containing the CSV data
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+  
+    // Create a link element and trigger a download
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    link.setAttribute('href', url);
+    link.setAttribute('download', 'log_data.csv');
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+  
   useEffect(() => {
     fetch('http://localhost:4000/log')
       .then(response => response.json())
@@ -66,6 +114,11 @@ const handleEdit = (logId) => {
           />
         </div>
       </div>
+      <button className='save-btn' style={{ paddingTop: '10px', paddingBottom: '10px' }} onClick={downloadCSV}>
+        Save data
+      </button>
+
+
       <table>
         <thead>
           <tr>
@@ -100,6 +153,7 @@ const handleEdit = (logId) => {
           )}
         </tbody>
       </table>
+
     </div>
   );
 }

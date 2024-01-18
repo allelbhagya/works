@@ -277,3 +277,20 @@ header nav .nav-button:hover {
 h1 {
   font-size: 1.5em; /* You can adjust the value as needed */
 }
+
+/* Add this to increase specificity */
+button.save-btn {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  width: 150px; /* Set the width as needed */
+}
+
+/* Add this to your existing CSS */
+.search-box {
+  margin-bottom: 20px; /* Adjust the margin as needed */
+}
+
+/* Adjust the margin between the button and the table */
+.log table {
+  margin-top: 15px; /* Adjust the margin as needed */
+}
