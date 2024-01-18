@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Navigate } from "react-router-dom";
 import { useEffect } from "react";
-import Select from "react-select"; // Import react-select
+import Select from "react-select"; 
 
 export default function CreateLog() {
   const [times, setTimes] = useState('');
@@ -15,8 +15,21 @@ export default function CreateLog() {
   const [comms, setComms] = useState('');
   const [sensorOptions, setSensorOptions] = useState([]);
   const [redirect, setRedirect] = useState(false);
+  const [createdAtTimestamp, setCreatedAtTimestamp] = useState('');
+
+  const handleEndTimeChange = (ev) => {
+    const endTime = new Date(ev.target.value);
+    const currentTime = new Date();
+    const timeDifferenceInMinutes = Math.floor((endTime - currentTime) / (1000 * 60));
+
+    // Update the duration state with the calculated difference
+    setDuration(timeDifferenceInMinutes >= 0 ? timeDifferenceInMinutes : '');
+    setTimes(ev.target.value);
+  };
 
   useEffect(() => {
+    const currentTimeStamp = new Date();
+    setCreatedAtTimestamp(currentTimeStamp.toISOString());
     const fetchSensorOptions = async () => {
       try {
         const response = await fetch('/sensor.csv');
@@ -65,6 +78,8 @@ export default function CreateLog() {
     "Auto / manual chopping", "Dog house long tail check L1", "Dog house long tail check L2"
   ];
 
+  const profileOptions = ["2x10MM", "2x8MM", "2x16MM", "2x12MM", "2x20MM"]
+
   const handleRegionChange = (selectedRegion) => {
     const updatedRegions = selectedRegions.includes(selectedRegion)
       ? selectedRegions.filter(region => region !== selectedRegion)
@@ -79,8 +94,13 @@ export default function CreateLog() {
     setSelectedStoppages(updatedStoppages);
   };
 
+  const handleProfileChange = (selectedProfile) => {
+    setProf(selectedProfile.value);
+  };
+
   async function createNewLog(ev) {
     const data = new FormData();
+    data.set('createdAt', createdAtTimestamp); 
     data.set('time', times);
     data.set('duration', duration);
     data.set('region', JSON.stringify(selectedRegions));
@@ -104,28 +124,46 @@ export default function CreateLog() {
   if (redirect) {
     return <Navigate to={'/'} />;
   }
+  const currTime = new Date();
+
+  const formatTimestamp = (timestamp) => {
+    try {
+      return new Date(timestamp).toLocaleString();
+    } catch (error) {
+      console.error('Invalid date:', timestamp);
+      return timestamp;
+    }
+  };
 
   return (
+    <>
+        <div>
+        <h1>Report cobble</h1>
+        </div>
     <form className="logform" onSubmit={createNewLog}>
-      <h1>Report a cobble</h1>
-      <label>Report time</label>
-      <input
-        type="datetime-local"
-        value={times}
-        onChange={(ev) => setTimes(ev.target.value)}
-      />
-      <label>
-        Duration (in minutes)
-      </label>
-      <input
-        type="number"
-        value={duration}
-        onChange={ev => setDuration(ev.target.value)}
-      />
+
+      <div>
+      <label>Cobble Report time</label>
+      {formatTimestamp(currTime.toISOString())}
+    </div>
 
 
-<div className="table-options">
-  <div className="table-option">
+    <label>End time</label>
+        <input
+          type="datetime-local"
+          value={times}
+          onChange={handleEndTimeChange}  // Use the new event handler
+        />
+        <label>Duration (in minutes)</label>
+        <input
+          type="number"
+          value={duration}
+          onChange={(ev) => setDuration(ev.target.value)}
+        />
+
+
+    <div className="table-options">
+    <div className="table-option">
     <div className="options-table">
       <div className="options-table-column">
         <label>Affected Region</label>
@@ -181,11 +219,11 @@ export default function CreateLog() {
         </table>
       </div>
     </div>
-  </div>
-</div>
+    </div>
+    </div>
 
 
-<label>
+    <label>
         SensorID and Tag name
       </label>
       <Select
@@ -195,15 +233,18 @@ export default function CreateLog() {
         onChange={selectedOptions => setSelectedSensors(selectedOptions)}
         placeholder="Select Sensor ID"
       />
-      <label>
-        Profile
-      </label>
-      <input
-        type="text"
-        placeholder="profile"
-        value={prof}
-        onChange={ev => setProf(ev.target.value)}
-      />
+          <label>
+            Profile
+          </label>
+          <Select
+  value={{ value: prof, label: prof }}
+  options={profileOptions.map((profileOption) => ({
+    value: profileOption,
+    label: profileOption,
+  }))}
+  onChange={handleProfileChange}
+  placeholder="Select Profile"
+/>
       <label>
         Correctness Measure
       </label>
@@ -225,5 +266,7 @@ export default function CreateLog() {
       />
       <button>Submit log</button>
     </form>
+    </>
+
   )
 }
