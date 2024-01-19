@@ -1,4 +1,4 @@
-// IndexPage.js
+
 import React, { useEffect, useState } from 'react';
 import Log from './Log';
 import { useNavigate } from 'react-router-dom';
@@ -9,7 +9,6 @@ export default function IndexPage() {
   const [searchTerm, setSearchTerm] = useState('');
 
   const downloadCSV = () => {
-    // Prepare the CSV content
     const headers = [
       'Report time',
       'Cobble time',
@@ -43,10 +42,8 @@ export default function IndexPage() {
       }).join(',')),
     ].join('\n');
   
-    // Create a Blob containing the CSV data
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
   
-    // Create a link element and trigger a download
     const link = document.createElement('a');
     const url = URL.createObjectURL(blob);
     link.setAttribute('href', url);
@@ -91,7 +88,6 @@ const handleDelete = async (logId) => {
 };
 
 const handleEdit = (logId) => {
-  // Redirect to the edit page with the logId
   navigate(`/edit/${logId}`);
 };
 

@@ -12,9 +12,9 @@ const app = express();
 
 
 const salt = bcrypt.genSaltSync(10);
-const secret = "qddi10eu90ikj1wqmn";
+const secret = 'asdfe45we45w345wegw345werjktjwertkj';
 
-app.use(cors({credentials:true, origin:'http://localhost:3000'}))
+app.use(cors({credentials:true,origin:'http://localhost:3000'}));
 app.use(express.json());
 app.use(cookieParser());
 
@@ -32,33 +32,43 @@ app.post('/register', async(req,res)=>{
     } 
 })
 
-app.post('/login', async(req,res)=>{
-    const {username, password} = req.body;
+app.post('/login', async (req,res) => {
+    const {username,password} = req.body;
     const userDoc = await User.findOne({username});
     const passOk = bcrypt.compareSync(password, userDoc.password);
-    if(passOk){
-        //logged in
-        jwt.sign({username, id:userDoc._id }, secret, {}, (err, token)=>{
-            if(err) throw err;
-            res.cookie('token', token).json({
-                id:userDoc._id,
-                username,
-            });
+    if (passOk) {
+      // logged in
+      jwt.sign({username,id:userDoc._id}, secret, {}, (err,token) => {
+        if (err) throw err;
+        res.cookie('token', token).json({
+          id:userDoc._id,
+          username,
         });
-        //res.json();
+      });
+    } else {
+      res.status(400).json('wrong credentials');
     }
-    else{
-        res.status(400).json('wrong credentials');
-    }
-})
+  });
 
-app.get('/profile', (req,res)=>{
-    const {token} = req.cookies;
-    jwt.verify(token, secret, {}, (err, info)=>{
-        if(err) throw err;
+  app.get('/profile', async (req, res) => {
+    try {
+        const { token } = req.cookies;
+
+        if (!token) {
+            return res.status(401).json({ error: 'Unauthorized - No token found' });
+        }
+
+        const info = await jwt.verify(token, secret);
+
         res.json(info);
-    })
-})
+    } catch (error) {
+        console.error('Error during profile:', error);
+        res.status(401).json({ error: 'Unauthorized - Invalid token' });
+    }
+});
+
+
+
 
 app.post('/logout', (req,res)=>{
     res.cookie('token', '').json('ok');

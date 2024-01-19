@@ -1,4 +1,4 @@
-// EditLog.js
+
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -105,7 +105,7 @@ export default function EditLog() {
       };
       useEffect(() => {
         if (redirect) {
-          navigate('/'); // Navigate after the component has rendered
+          navigate('/');
         }
       }, [redirect, navigate]);
     
