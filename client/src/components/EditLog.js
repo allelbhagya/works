@@ -50,6 +50,7 @@ export default function EditLog() {
         headers: {
           'Content-Type': 'application/json',
         },
+        credentials: 'include', // Add this line
         body: JSON.stringify({
           time: times,
           duration: duration,
@@ -105,7 +106,7 @@ export default function EditLog() {
       };
       useEffect(() => {
         if (redirect) {
-          navigate('/');
+          navigate('/logs');
         }
       }, [redirect, navigate]);
     

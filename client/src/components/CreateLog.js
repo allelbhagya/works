@@ -20,11 +20,11 @@ export default function CreateLog() {
   const handleEndTimeChange = (ev) => {
     const endTime = new Date(ev.target.value);
     const currentTime = new Date();
-    const timeDifferenceInMinutes = Math.floor((endTime - currentTime) / (1000 * 60));
-
-    setDuration(timeDifferenceInMinutes >= 0 ? timeDifferenceInMinutes : '');
+    const timeDifferenceInSeconds = Math.floor((endTime - currentTime) / 1000);
+  
+    setDuration(timeDifferenceInSeconds >= 0 ? timeDifferenceInSeconds : '');
     setTimes(ev.target.value);
-  };
+  };  
 
   useEffect(() => {
     const currentTimeStamp = new Date();
@@ -116,7 +116,7 @@ export default function CreateLog() {
   }
 
   if (redirect) {
-    return <Navigate to={'/'} />;
+    return <Navigate to={'/logs'} />;
   }
   const currTime = new Date();
 
@@ -143,17 +143,20 @@ export default function CreateLog() {
 
 
     <label>End time</label>
-        <input
-          type="datetime-local"
-          value={times}
-          onChange={handleEndTimeChange} 
-        />
-        <label>Duration (in minutes)</label>
-        <input
-          type="number"
-          value={duration}
-          onChange={(ev) => setDuration(ev.target.value)}
-        />
+    <input
+      type="datetime-local"
+      value={times}
+      onChange={handleEndTimeChange}
+      step="1" 
+    />
+
+<label>Duration (in seconds)</label>
+<input
+  type="number"
+  value={duration}
+  onChange={(ev) => setDuration(ev.target.value)}
+/>
+
 
 
     <div className="table-options">

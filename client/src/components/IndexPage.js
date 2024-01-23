@@ -54,38 +54,49 @@ export default function IndexPage() {
   };
   
   useEffect(() => {
-    fetch('http://localhost:4000/log')
-      .then(response => response.json())
+    fetch('http://localhost:4000/log', {
+      credentials: 'include', // Add this line
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Error fetching logs');
+        }
+        return response.json();
+      })
       .then(logs => {
         setLogs(logs);
       })
       .catch(error => {
-        console.error('Error fetching logs:', error);
+        console.error('Error fetching logs:', error.message);
+        // Handle the error, e.g., show an error message to the user or redirect to an error page
       });
   }, []);
-
-const handleDelete = async (logId) => {
-  const confirmed = window.confirm('Are you sure you want to delete this log?');
-
-  if (confirmed) {
-    try {
-      const response = await fetch(`http://localhost:4000/log/${logId}`, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-
-      if (response.ok) {
-        setLogs(prevLogs => prevLogs.filter(log => log._id !== logId));
-      } else {
-        console.error('Error deleting log:', response.statusText);
+  
+  
+  const handleDelete = async (logId) => {
+    const confirmed = window.confirm('Are you sure you want to delete this log?');
+  
+    if (confirmed) {
+      try {
+        const response = await fetch(`http://localhost:4000/log/${logId}`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          credentials: 'include', // Add this line
+        });
+  
+        if (response.ok) {
+          setLogs(prevLogs => prevLogs.filter(log => log._id !== logId));
+        } else {
+          console.error('Error deleting log:', response.statusText);
+        }
+      } catch (error) {
+        console.error('Error deleting log:', error);
       }
-    } catch (error) {
-      console.error('Error deleting log:', error);
     }
-  }
-};
+  };
+  
 
 const handleEdit = (logId) => {
   navigate(`/edit/${logId}`);
